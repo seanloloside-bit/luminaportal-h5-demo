@@ -462,6 +462,69 @@
           </div>
         </section>
 
+        <section class="view" id="adminView">
+          <div class="section-heading">
+            <h2>管理员协作台</h2>
+            <p>用于和程序团队对接接口、服务器、上线配置。正式上线时请迁移到服务端权限系统。</p>
+          </div>
+
+          <div class="admin-login-card" id="adminLoginCard">
+            <span>Private Access</span>
+            <strong>输入协作密码</strong>
+            <em>仅限项目协作人员进入。</em>
+            <input id="adminPassword" type="password" placeholder="输入管理员密码" autocomplete="current-password" />
+            <button class="primary-action" id="adminLoginBtn" type="button">进入管理员界面</button>
+            <p class="admin-error" id="adminError"></p>
+          </div>
+
+          <div class="admin-panel hidden" id="adminPanel">
+            <div class="admin-warning">
+              <strong>重要安全说明</strong>
+              <span>H5 不能真正隐藏底层代码，也不能保存真实 API Key。正式产品需要后端登录、私有代码仓库、服务端代理接口和权限审计。</span>
+            </div>
+
+            <div class="admin-grid">
+              <label class="admin-field">
+                <span>服务器 API Base URL</span>
+                <input type="text" value="https://api.luminaportal.com" />
+              </label>
+              <label class="admin-field">
+                <span>生图任务接口</span>
+                <input type="text" value="/v1/jobs/generate" />
+              </label>
+              <label class="admin-field">
+                <span>人像上传接口</span>
+                <input type="text" value="/v1/assets/portrait-upload" />
+              </label>
+              <label class="admin-field">
+                <span>支付回调接口</span>
+                <input type="text" value="/v1/payments/webhook" />
+              </label>
+              <label class="admin-field">
+                <span>资产同步接口</span>
+                <input type="text" value="/v1/user/assets" />
+              </label>
+              <label class="admin-field">
+                <span>环境</span>
+                <select>
+                  <option>测试环境 Staging</option>
+                  <option>正式环境 Production</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="admin-checklist">
+              <strong>给程序团队的上线清单</strong>
+              <span>后端登录鉴权 / API Key 服务端保存 / 图片上传签名 / 支付验签 / 数据库资产表 / 生成任务队列 / CDN 防盗链 / 管理员操作日志</span>
+            </div>
+
+            <div class="admin-actions">
+              <button class="invite-action" id="adminCopyConfigBtn" type="button">复制接口配置</button>
+              <button class="invite-action" id="adminLogoutBtn" type="button">退出管理员</button>
+            </div>
+          </div>
+        </section>
+
         <nav class="bottom-nav">
           <button class="nav-item active" data-nav="home" type="button">首页</button>
           <button class="nav-item" data-nav="community" type="button">发现</button>

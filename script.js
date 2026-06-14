@@ -9,6 +9,7 @@ const flowView = document.querySelector("#flowView");
 const assetsView = document.querySelector("#assetsView");
 const messageView = document.querySelector("#messageView");
 const communityView = document.querySelector("#communityView");
+const adminView = document.querySelector("#adminView");
 const flowPanel = document.querySelector("#flowPanel");
 const flowTitle = document.querySelector("#flowTitle");
 const flowEyebrow = document.querySelector("#flowEyebrow");
@@ -23,6 +24,7 @@ const mainViews = [
   assetsView,
   messageView,
   communityView,
+  adminView,
 ];
 
 const modes = {
@@ -90,6 +92,9 @@ let retouchCoupons = 0;
 let selectedProject = "wedding";
 let familyMemberCount = 3;
 let claimedInviteRewards = new Set();
+let isAdminUnlocked = false;
+let suppressLogoReset = false;
+const adminPasswordHash = "5c3d2f8db545aaf7e16782b7997f5e8f4277e0e5277619bd39ca1f1036564f99";
 
 function showView(view, title) {
   const currentView = mainViews.find((item) => item.classList.contains("active"));
@@ -105,6 +110,7 @@ function showViewDirect(view, title) {
   appTitle.textContent = title;
   screen.classList.toggle("studio-ready", view === homeView || view === flowView);
   screen.classList.toggle("welcome-mode", view === welcomeView);
+  screen.classList.toggle("admin-mode", view === adminView);
   updateBottomNav(view);
 }
 
@@ -160,6 +166,12 @@ function showMessages() {
 
 function showCommunity() {
   showView(communityView, "发现");
+  setProgress(0);
+}
+
+function showAdmin() {
+  showView(adminView, "管理员协作台");
+  renderAdminState();
   setProgress(0);
 }
 
@@ -595,6 +607,30 @@ function renderInviteBalance() {
   });
 }
 
+async function sha256(value) {
+  const bytes = new TextEncoder().encode(value);
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function renderAdminState() {
+  const loginCard = document.querySelector("#adminLoginCard");
+  const adminPanel = document.querySelector("#adminPanel");
+  if (!loginCard || !adminPanel) return;
+
+  loginCard.classList.toggle("hidden", isAdminUnlocked);
+  adminPanel.classList.toggle("hidden", !isAdminUnlocked);
+}
+
+function collectAdminConfig() {
+  const fields = [...document.querySelectorAll(".admin-field")].map((field) => {
+    const label = field.querySelector("span")?.textContent || "配置项";
+    const control = field.querySelector("input, select");
+    return `${label}: ${control?.value || ""}`;
+  });
+  return ["Luminaportal 管理员接口配置", ...fields].join("\n");
+}
+
 function bindInviteActions() {
   document.querySelectorAll("[data-invite]").forEach((button) => {
     if (claimedInviteRewards.has(button.dataset.invite)) {
@@ -747,7 +783,46 @@ function bindOnboarding() {
   });
 
   bindInviteActions();
+  bindAdminActions();
 
+}
+
+function bindAdminActions() {
+  const passwordInput = document.querySelector("#adminPassword");
+  const loginButton = document.querySelector("#adminLoginBtn");
+  const error = document.querySelector("#adminError");
+  const logoutButton = document.querySelector("#adminLogoutBtn");
+  const copyButton = document.querySelector("#adminCopyConfigBtn");
+
+  loginButton?.addEventListener("click", async () => {
+    const password = passwordInput.value.trim();
+    const hash = await sha256(password);
+    if (hash !== adminPasswordHash) {
+      error.textContent = "密码不正确，请重新输入。";
+      passwordInput.value = "";
+      return;
+    }
+
+    isAdminUnlocked = true;
+    error.textContent = "";
+    passwordInput.value = "";
+    renderAdminState();
+  });
+
+  passwordInput?.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") loginButton.click();
+  });
+
+  logoutButton?.addEventListener("click", () => {
+    isAdminUnlocked = false;
+    renderAdminState();
+  });
+
+  copyButton?.addEventListener("click", async () => {
+    const config = collectAdminConfig();
+    await navigator.clipboard?.writeText(config);
+    copyButton.textContent = "已复制配置";
+  });
 }
 
 function renderCaptureForProject() {
@@ -884,17 +959,58 @@ function setProgress(step) {
   });
 }
 
+function bindHiddenAdminEntry() {
+  const logoButton = document.querySelector("#resetBtn");
+  let pressTimer;
+  let adminEntryTriggered = false;
+
+  logoButton.addEventListener("pointerdown", () => {
+    adminEntryTriggered = false;
+    pressTimer = window.setTimeout(() => {
+      adminEntryTriggered = true;
+      suppressLogoReset = true;
+      navigationStack = [];
+      showAdmin();
+    }, 950);
+  });
+
+  ["pointerup", "pointerleave", "pointercancel"].forEach((eventName) => {
+    logoButton.addEventListener(eventName, () => {
+      window.clearTimeout(pressTimer);
+    });
+  });
+
+  logoButton.addEventListener("click", (event) => {
+    if (!adminEntryTriggered) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  });
+}
+
 document.querySelectorAll("[data-mode]").forEach((button) => {
   button.addEventListener("click", () => openMode(button.dataset.mode));
 });
 
 document.querySelector("#backBtn").addEventListener("click", goBack);
 document.querySelector("#resetBtn").addEventListener("click", () => {
+  if (suppressLogoReset) {
+    suppressLogoReset = false;
+    return;
+  }
   navigationStack = [];
   showWelcome();
 });
 
+window.addEventListener("hashchange", () => {
+  if (window.location.hash === "#admin") showAdmin();
+});
+
 bindOnboarding();
-showWelcome();
+bindHiddenAdminEntry();
+if (window.location.hash === "#admin") {
+  showAdmin();
+} else {
+  showWelcome();
+}
 renderGrowthStatus();
 renderWallet();

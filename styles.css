@@ -259,6 +259,10 @@ h3 {
   display: none;
 }
 
+.screen.admin-mode .bottom-nav {
+  display: none;
+}
+
 .nav-item,
 .nav-plus {
   border: 0;
@@ -1524,6 +1528,97 @@ h3 {
   background: var(--cream);
   padding: 14px;
   text-align: center;
+}
+
+.admin-login-card,
+.admin-warning,
+.admin-checklist {
+  display: grid;
+  gap: 8px;
+  border: 1px solid rgba(25, 23, 22, 0.12);
+  border-radius: 22px;
+  background: #fff;
+  padding: 16px;
+}
+
+.admin-login-card span,
+.admin-warning strong,
+.admin-checklist strong {
+  width: fit-content;
+  border-radius: 999px;
+  background: #191716;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+  padding: 5px 8px;
+}
+
+.admin-login-card strong {
+  font-size: 22px;
+}
+
+.admin-login-card em,
+.admin-warning span,
+.admin-checklist span,
+.admin-error {
+  color: var(--muted);
+  font-size: 12px;
+  font-style: normal;
+  line-height: 1.45;
+}
+
+.admin-login-card input,
+.admin-field input,
+.admin-field select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fffaf6;
+  color: var(--ink);
+  padding: 12px;
+}
+
+.admin-error {
+  min-height: 18px;
+  margin: 0;
+  color: var(--rose-dark);
+  font-weight: 800;
+}
+
+.admin-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-warning {
+  border-color: rgba(216, 168, 95, 0.45);
+  background: linear-gradient(145deg, #fff, #fff7e9);
+}
+
+.admin-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-field {
+  display: grid;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fff;
+  padding: 12px;
+}
+
+.admin-field span {
+  color: var(--rose-dark);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.admin-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
 }
 
 .message-list,
