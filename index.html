@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Luminaportal AI 拍摄 H5 Demo：从选择拍摄项目、上传人像、试衣、生成预览到资产和商城的移动端体验流程。" />
+    <meta name="theme-color" content="#fffaf6" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Luminaportal" />
+    <meta property="og:title" content="Luminaportal AI 拍摄 Demo" />
+    <meta property="og:description" content="体验 AI 婚纱照、写真、宝宝合拍和银发之恋的移动端拍摄流程。" />
+    <meta property="og:image" content="assets/wedding-hero.png" />
+    <title>Luminaportal AI 拍摄 Demo</title>
+    <link rel="apple-touch-icon" href="assets/luminaportal-logo.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="phone-shell">
+      <section class="screen">
+        <header class="topbar">
+          <button class="logo-button" id="resetBtn" type="button" aria-label="返回欢迎页">
+            <img src="assets/luminaportal-logo.png" alt="Luminaportal" />
+          </button>
+          <div>
+            <p class="eyebrow">AI Wedding Studio</p>
+            <h1 id="appTitle">3分钟，先看到你们的第一组婚照</h1>
+          </div>
+          <button class="message-button" id="messageBtn" type="button" aria-label="消息">
+            <span>●</span>
+          </button>
+        </header>
+
+        <section class="hero">
+          <img src="assets/wedding-hero.png" alt="花园里的 AI 婚纱摄影示意图" />
+          <div class="hero-copy">
+            <span>今日推荐</span>
+            <strong>花园电影感 · 12 张成片包</strong>
+          </div>
+        </section>
+
+        <section class="view active" id="welcomeView">
+          <div class="welcome-panel">
+            <div class="welcome-copy">
+              <span>LET AI BE AI</span>
+              <h2>LET AI BE AI</h2>
+              <p>从拍摄、试衣、成片到海报相册和定制礼物，一站完成。</p>
+              <button class="welcome-action" id="startBtn" type="button">
+                开始选择拍摄项目 <span>→</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="projectView">
+          <div class="section-heading">
+            <h2>你今天想拍什么？</h2>
+            <p>先选项目，后面的人像、服装和场景都会按这个主题推荐。</p>
+          </div>
+
+          <div class="official-pinned-card">
+            <span>官方活动</span>
+            <strong>写真美图比赛开启</strong>
+            <em>上传你的写真艺术照，点赞前 10 送实体相框和高清生成券。</em>
+          </div>
+
+          <div class="invite-card home-invite-card">
+            <span>官方活动 · 邀请奖励</span>
+            <strong>邀请码 LUMI2026</strong>
+            <em>邀请 1 位好友注册，获得 2 次免费生成；好友解锁高清图后，再获得 2 次。</em>
+            <div class="invite-balance" id="inviteBalance">当前可用生成券 3 张</div>
+            <div class="invite-actions">
+              <button class="invite-action" data-invite="register" type="button">模拟好友注册 +2</button>
+              <button class="invite-action" data-invite="unlock" type="button">模拟好友解锁 +2</button>
+            </div>
+          </div>
+
+          <div class="loop-panel">
+            <div>
+              <span>今日可玩</span>
+              <strong id="dailyCredits">免费生成 3 次</strong>
+              <em>低清预览免费玩，喜欢再解锁高清</em>
+            </div>
+            <div>
+              <span>我的券包</span>
+              <strong id="couponCount">生成券 0 · 微调券 0</strong>
+              <em>完成发现任务可领取</em>
+            </div>
+          </div>
+
+          <div class="task-strip">
+            <button class="task-chip" data-reward="generation" type="button">投稿地点 +1 生成券</button>
+            <button class="task-chip" data-reward="retouch" type="button">晒图参赛 +1 微调券</button>
+          </div>
+
+          <div class="project-grid">
+            <button class="project-card selected" data-project="wedding" type="button">
+              <span>热卖</span>
+              <strong>婚纱照</strong>
+              <em>情侣、备婚、婚礼物料</em>
+            </button>
+            <button class="project-card" data-project="portrait" type="button">
+              <span>个人表达</span>
+              <strong>写真艺术照</strong>
+              <em>生日、头像、社交大片</em>
+            </button>
+            <button class="project-card" data-project="baby" type="button">
+              <span>成长记录</span>
+              <strong>和宝宝一起拍</strong>
+              <em>爸爸妈妈宝宝，三人一起入镜</em>
+            </button>
+            <button class="project-card" data-project="silver" type="button">
+              <span>情绪价值</span>
+              <strong>银发之恋</strong>
+              <em>父母纪念照、金婚礼物</em>
+            </button>
+          </div>
+
+          <button class="primary-action sticky-action" id="chooseProjectBtn" type="button">
+            选择婚纱照，继续
+          </button>
+        </section>
+
+        <section class="view" id="captureView">
+          <div class="conversion-strip">
+            <span>今日 128 对新人已试拍</span>
+            <strong>首组低至 ￥9.9</strong>
+          </div>
+          <div class="section-heading">
+            <h2 id="captureTitle">先把你们放进婚照里</h2>
+            <p id="captureDesc">上传两张清晰正脸，马上预览穿上婚纱西装后的样子。</p>
+          </div>
+
+          <div class="portrait-grid">
+            <label class="portrait-card" data-portrait-card="first">
+              <input type="file" accept="image/*" data-person="male" />
+              <img src="assets/male-model.jpg" alt="男生人像示例" />
+              <span data-portrait-label>男生入口 · 已示范</span>
+              <strong data-portrait-action>拍 / 传男生正脸</strong>
+            </label>
+            <label class="portrait-card" data-portrait-card="second">
+              <input type="file" accept="image/*" data-person="female" />
+              <img src="assets/female-model.jpg" alt="女生人像示例" />
+              <span data-portrait-label>女生入口 · 已示范</span>
+              <strong data-portrait-action>拍 / 传女生正脸</strong>
+            </label>
+            <label class="portrait-card hidden" data-portrait-card="third">
+              <input type="file" accept="image/*" data-person="baby" />
+              <img src="assets/female-model.jpg" alt="宝宝人像示例" />
+              <span data-portrait-label>宝宝入口 · 已示范</span>
+              <strong data-portrait-action>拍 / 传宝宝正脸</strong>
+            </label>
+            <button class="portrait-add-card hidden" id="addFamilyMemberBtn" type="button">
+              <span>+</span>
+              <strong>添加更多成员</strong>
+              <em>4 口 / 5 口之家可补充</em>
+            </button>
+          </div>
+
+          <div class="trust-row">
+            <span>不满意不保存</span>
+            <span>先预览再付费</span>
+            <span>头像只用于本次生成</span>
+          </div>
+          <button class="primary-action sticky-action" id="toOutfitBtn" type="button">
+            先用示范头像体验
+          </button>
+        </section>
+
+        <section class="view" id="outfitView">
+          <div class="step-label">第 2 步 / 3 步</div>
+          <div class="section-heading">
+            <h2>先试穿，再决定拍哪套</h2>
+            <p>用你们自己的脸预览婚纱西装，降低“会不会不像我”的顾虑。</p>
+          </div>
+
+          <div class="tryon-preview">
+            <div class="tryon-person">
+              <img src="assets/male-model.jpg" alt="男生试衣形象" />
+              <span>黑色礼服西装</span>
+            </div>
+            <div class="tryon-person">
+              <img src="assets/female-model.jpg" alt="女生试衣形象" />
+              <span>极简吊带婚纱</span>
+            </div>
+          </div>
+
+          <div class="outfit-list">
+            <button class="outfit-card selected" type="button">
+              <span>最多人选</span>
+              <strong>经典高级</strong>
+              <em>黑色西装 + 极简白纱</em>
+            </button>
+            <button class="outfit-card" type="button">
+              <span>适合发朋友圈</span>
+              <strong>法式复古</strong>
+              <em>丝绒礼服 + 缎面婚纱</em>
+            </button>
+            <button class="outfit-card" type="button">
+              <span>户外感更强</span>
+              <strong>轻盈户外</strong>
+              <em>浅色西装 + 花园纱裙</em>
+            </button>
+          </div>
+
+          <div class="paid-closet">
+            <div class="section-heading compact">
+              <h2>高级衣橱</h2>
+              <p>像 QQ 秀一样购买更高级的婚纱西装，成片会更有“花钱变美”的感觉。</p>
+            </div>
+            <div class="closet-grid">
+              <button class="closet-card selected" type="button">
+                <span>免费</span>
+                <strong>基础经典套装</strong>
+                <em>已包含</em>
+              </button>
+              <button class="closet-card premium" type="button">
+                <span>+￥19</span>
+                <strong>高定缎面婚纱</strong>
+                <em>更适合室内大片</em>
+              </button>
+              <button class="closet-card premium" type="button">
+                <span>+￥29</span>
+                <strong>王室拖尾礼服</strong>
+                <em>仪式感最强</em>
+              </button>
+              <button class="closet-card premium" type="button">
+                <span>+￥19</span>
+                <strong>复古丝绒西装</strong>
+                <em>更有电影质感</em>
+              </button>
+            </div>
+          </div>
+
+          <button class="primary-action sticky-action" id="enterStudioBtn" type="button">
+            确认形象，看看我们能拍成什么样
+          </button>
+        </section>
+
+        <section class="view" id="homeView">
+          <div class="step-label">第 3 步 / 3 步</div>
+          <div class="section-heading">
+            <h2>选择你们今晚最想看的那一组</h2>
+            <p>可以先从低价试拍开始，也可以直接做专属故事婚照。</p>
+          </div>
+
+          <div class="mode-grid">
+            <button class="mode-card" data-mode="template" type="button">
+              <b>先试一下</b>
+              <span class="mode-icon">01</span>
+              <strong>￥9.9 模板快拍</strong>
+              <em>3分钟出第一组，适合冲动试拍</em>
+            </button>
+            <button class="mode-card" data-mode="blind" type="button">
+              <b>本周限量</b>
+              <span class="mode-icon">02</span>
+              <strong>￥19.9 惊喜盲盒</strong>
+              <em>只看命运给你们哪一套电影感</em>
+            </button>
+            <button class="mode-card featured" data-mode="story" type="button">
+              <b>推荐</b>
+              <span class="mode-icon">03</span>
+              <strong>￥59 故事定制</strong>
+              <em>把相识地点、纪念日做成独一套</em>
+            </button>
+            <button class="mode-card" data-mode="upload" type="button">
+              <b>走进真实生活</b>
+              <span class="mode-icon">04</span>
+              <strong>￥39 上传场景</strong>
+              <em>家门口、旅行照、求婚地都能拍</em>
+            </button>
+          </div>
+          <div class="soft-close">今晚 24:00 前下单，赠送 2 张情侣头像版封面。</div>
+        </section>
+
+        <section class="view" id="flowView">
+          <div class="flow-head">
+            <button class="back-button" id="backBtn" type="button">‹</button>
+            <div>
+              <p class="eyebrow" id="flowEyebrow">体验方式</p>
+              <h2 id="flowTitle">模板快拍</h2>
+            </div>
+          </div>
+
+          <div class="progress">
+            <span class="progress-dot active"></span>
+            <span class="progress-dot"></span>
+            <span class="progress-dot"></span>
+          </div>
+
+          <div class="flow-panel" id="flowPanel"></div>
+        </section>
+
+        <section class="view" id="assetsView">
+          <div class="section-heading">
+            <h2>资产</h2>
+            <p>这里展示已解锁高清图、已选择模板、制作中的物料订单。</p>
+          </div>
+          <div class="wallet-card">
+            <span>生成券钱包</span>
+            <strong id="assetWalletBalance">余额 0 张</strong>
+            <em>可用于生成预览、参与活动或抵扣部分付费玩法。</em>
+            <div class="wallet-actions">
+              <button class="wallet-action" data-wallet="recharge" type="button">充值</button>
+              <button class="wallet-action" data-wallet="gift" type="button">赠送</button>
+            </div>
+          </div>
+          <div class="asset-list">
+            <div id="assetList"></div>
+            <div class="asset-empty">还没有更多资产，去拍一组新的照片吧。</div>
+          </div>
+          <div class="favorite-section">
+            <div class="section-heading compact">
+              <h2>我的收藏</h2>
+              <p>在发现页收藏的地点、灵感和合作商家，会沉淀在这里。</p>
+            </div>
+            <div id="favoriteList"></div>
+            <div class="favorite-empty">还没有收藏内容，去发现页收藏你喜欢的灵感吧。</div>
+          </div>
+        </section>
+
+        <section class="view" id="messageView">
+          <div class="section-heading">
+            <h2>消息</h2>
+            <p>接收官方活动、资产通知，也可以随时联系在线客服。</p>
+          </div>
+          <div class="message-list">
+            <div class="message-card official-message">
+              <strong>官方活动提醒</strong>
+              <span>写真美图比赛正在进行，投稿可赢实体相框。</span>
+            </div>
+            <div class="message-card">
+              <strong>资产通知</strong>
+              <span>解锁高清图后，会自动同步到资产和商城。</span>
+            </div>
+          </div>
+          <div class="chat-box">
+            <div class="chat-message service">你好，我是 Luminaportal 客服。需要帮你选择模板、解锁高清或制作物料吗？</div>
+            <div class="chat-message user">我想了解婚纱租赁和相册制作。</div>
+            <div class="chat-input">
+              <input type="text" placeholder="输入消息..." />
+              <button type="button">发送</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="communityView">
+          <div class="section-heading">
+            <h2>发现</h2>
+            <p>分享婚礼灵感、真实拍摄地点和备婚经验，贡献越多，可获得更多免费生成次数。</p>
+          </div>
+
+          <div class="community-tabs">
+            <button class="community-tab active" type="button">灵感广场</button>
+            <button class="community-tab" type="button">发现美丽地点</button>
+            <button class="community-tab" type="button">同城新人榜</button>
+            <button class="community-tab" type="button">官方活动</button>
+          </div>
+
+          <div class="official-pinned-card community-pin">
+            <span>官方置顶</span>
+            <strong>写真美图比赛</strong>
+            <em>不限婚照，写真艺术照也可投稿；点赞前 10 送实体相框，冠军送定制相册。</em>
+          </div>
+
+          <div class="challenge-card">
+            <span>本周活动</span>
+            <strong>#发现美丽的地点#</strong>
+            <em>上传适合拍照的真实地点，审核通过送 3 次免费生成；点赞前 10 送定制相册。</em>
+          </div>
+
+          <div class="feed-list">
+            <article class="feed-card">
+              <div class="feed-user">
+                <span class="avatar">L</span>
+                <div>
+                  <strong>鹿鹿和阿川</strong>
+                  <em>分享了一个真实拍摄地点 · 上海</em>
+                </div>
+              </div>
+              <div class="feed-photo photo"></div>
+              <p><strong>#发现美丽的地点#</strong> 这片花园下午 4 点光最好，背景干净，人少，很适合做户外婚照和迎宾海报。</p>
+              <div class="feed-actions">
+                <button class="feed-action like-action" type="button">有用 128</button>
+                <button class="feed-action collect-action" type="button">收藏地点</button>
+                <button class="feed-action create-action" type="button">用我的人像试拍</button>
+              </div>
+            </article>
+
+            <article class="feed-card">
+              <div class="feed-user">
+                <span class="avatar">M</span>
+                <div>
+                  <strong>木木婚礼日记</strong>
+                  <em>分享了婚礼策划 idea</em>
+                </div>
+              </div>
+              <div class="feed-photo photo alt"></div>
+              <p><strong>#我的迎宾区想法#</strong> 用 AI 婚照做三联迎宾区：一张主海报、一张故事卡、一张宾客签名相框。</p>
+              <div class="feed-actions">
+                <button class="feed-action like-action" type="button">想要 89</button>
+                <button class="feed-action collect-action" type="button">收藏 idea</button>
+                <button class="feed-action shop-jump-action" type="button">去做物料</button>
+              </div>
+            </article>
+
+            <article class="feed-card official-feed">
+              <div class="feed-user">
+                <span class="avatar">赛</span>
+                <div>
+                  <strong>写真美图比赛</strong>
+                  <em>官方活动 · 投稿中</em>
+                </div>
+              </div>
+              <div class="feed-photo photo cool"></div>
+              <p><strong>#写真美图比赛#</strong> 适合个人写真、情侣写真、艺术头像。发布作品并邀请好友点赞，排名越高奖励越多。</p>
+              <div class="feed-actions">
+                <button class="feed-action create-action" type="button">去拍写真</button>
+                <button class="feed-action contribute-action" type="button">投稿作品</button>
+                <button class="feed-action like-action" type="button">我要围观</button>
+              </div>
+            </article>
+
+            <article class="feed-card official-feed">
+              <div class="feed-user">
+                <span class="avatar">官</span>
+                <div>
+                  <strong>官方活动</strong>
+                  <em>同城新人点赞榜 · 每周开奖</em>
+                </div>
+              </div>
+              <p>本周同城新人晒图点赞前 10 名，赠送一本 20 页定制相册；地点贡献榜前 20 名，赠送 3 次高清生成。</p>
+              <div class="feed-actions">
+                <button class="feed-action contribute-action" type="button">投稿地点</button>
+                <button class="feed-action like-action" type="button">我要参加</button>
+              </div>
+            </article>
+
+            <article class="feed-card vendor-feed">
+              <div class="feed-user">
+                <span class="avatar">商</span>
+                <div>
+                  <strong>同城婚庆策划商家推荐</strong>
+                  <em>上海 · 官方合作入口</em>
+                </div>
+              </div>
+              <p><strong>#婚庆策划推荐#</strong> 根据你选择的婚照风格和婚礼物料，推荐适合的同城婚庆策划商家。未来可预约到店、看案例、领合作优惠。</p>
+              <div class="vendor-list">
+                <button class="vendor-card" type="button">
+                  <strong>花屿婚礼策划</strong>
+                  <em>擅长户外花园婚礼 · 4.9 分</em>
+                </button>
+                <button class="vendor-card" type="button">
+                  <strong>白日梦婚礼工作室</strong>
+                  <em>擅长小众艺术婚礼 · 4.8 分</em>
+                </button>
+              </div>
+              <div class="feed-actions">
+                <button class="feed-action collect-action" type="button">收藏商家</button>
+                <button class="feed-action like-action" type="button">想咨询</button>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <nav class="bottom-nav">
+          <button class="nav-item active" data-nav="home" type="button">首页</button>
+          <button class="nav-item" data-nav="community" type="button">发现</button>
+          <button class="nav-plus" data-nav="create" type="button">+</button>
+          <button class="nav-item" data-nav="shop" type="button">商城</button>
+          <button class="nav-item" data-nav="assets" type="button">资产</button>
+        </nav>
+      </section>
+    </main>
+
+    <template id="templateStep">
+      <div class="section-heading compact">
+        <h2>选择模板快拍方案</h2>
+        <p>先选大类，再选风格，最后勾选具体模板样式。</p>
+      </div>
+
+      <div class="template-picker" data-level="category">
+        <button class="template-back" id="templateBackBtn" type="button">‹ 返回上一层</button>
+
+        <div class="picker-column picker-level" data-picker-level="category">
+          <p class="picker-title">1. 选择大类</p>
+          <button class="picker-option selected" data-category="solid" type="button">
+            <strong>纯色背景</strong>
+            <em>迎宾照适用</em>
+          </button>
+          <button class="picker-option" data-category="outdoor" type="button">
+            <strong>户外浪漫</strong>
+            <em>更适合情绪大片</em>
+          </button>
+        </div>
+
+        <div class="picker-column picker-level" data-picker-level="sub">
+          <p class="picker-title">2. 选择风格</p>
+          <div class="sub-option-list" id="subOptionList"></div>
+        </div>
+
+        <div class="picker-column variants-column picker-level" data-picker-level="variant">
+          <p class="picker-title">3. 选择模板编号</p>
+          <div class="variant-grid" id="variantGrid"></div>
+        </div>
+
+        <aside class="selected-template-rail">
+          <span>已选模板</span>
+          <div class="selected-template-list" id="selectedTemplateList">
+            <strong>复古红底 1</strong>
+          </div>
+          <em id="selectedTemplateDesc">可多选，最后一起生成预览</em>
+        </aside>
+      </div>
+
+      <button class="primary-action" data-next="result" type="button">确认模板，生成预览</button>
+    </template>
+
+    <template id="blindStep">
+      <div class="blind-box">
+        <p>本周限量</p>
+        <strong>不知道拍什么，就交给惊喜</strong>
+        <span>雨后花园款剩余 7 / 10 次</span>
+      </div>
+      <div class="info-strip">
+        <span>下周自动换新</span>
+        <span>每套只生成 10 对新人</span>
+      </div>
+      <button class="primary-action" data-next="reveal" type="button">￥19.9 打开本周盲盒</button>
+    </template>
+
+    <template id="storyStep">
+      <div class="chat-list">
+        <div class="bubble system">想把哪段回忆拍进婚照里？</div>
+        <button class="chip selected" data-group="meet" type="button">大学校园</button>
+        <button class="chip" data-group="meet" type="button">朋友聚会</button>
+        <button class="chip" data-group="meet" type="button">旅行途中</button>
+        <div class="bubble system">希望照片让别人觉得你们是什么感觉？</div>
+        <button class="chip selected" data-group="place" type="button">湖边花园</button>
+        <button class="chip" data-group="place" type="button">甜得很自然</button>
+        <button class="chip" data-group="place" type="button">像电影主角</button>
+      </div>
+      <div class="scene-preview">
+        <strong>为你们生成的专属概念</strong>
+        <p>校园旁的湖边花园，下午暖光，牵手散步、追逐嬉闹、背对背电影感三组动作。</p>
+      </div>
+      <button class="primary-action" data-next="confirm" type="button">就拍这个故事</button>
+    </template>
+
+    <template id="uploadStep">
+      <label class="upload-box">
+        <input type="file" accept="image/*" id="sceneUpload" />
+        <span>+</span>
+        <strong>上传一个对你们有意义的地方</strong>
+        <em>家、学校、旅行地、求婚地，都可以变成婚照现场</em>
+      </label>
+      <div class="mini-process">
+        <span>修掉杂物</span>
+        <span>补好光线</span>
+        <span>变成大片</span>
+      </div>
+      <button class="primary-action" data-next="result" type="button">先用示例场景看看效果</button>
+    </template>
+
+    <template id="revealStep">
+      <div class="reveal-card">
+        <span>已开出</span>
+        <strong>雨后花园 · 电影吻额</strong>
+        <p>这套本周还剩 6 次，生成后会获得你们的专属编号。</p>
+      </div>
+      <button class="primary-action" data-next="result" type="button">确认，就用这套惊喜</button>
+    </template>
+
+    <template id="confirmStep">
+      <div class="confirm-scene">
+        <span class="photo-thumb garden large"></span>
+        <h3>你们的湖边花园故事</h3>
+        <p>会先出 3 张核心预览：亲密、玩闹、高级电影感。满意后再解锁完整套图。</p>
+      </div>
+      <button class="primary-action" data-next="result" type="button">生成我的专属故事婚照</button>
+    </template>
+
+    <template id="resultStep">
+      <div class="result-head">
+        <h2>预览成片，解锁喜欢的高清图</h2>
+        <p>这里仅展示低清预览，喜欢哪张就点选哪张，解锁后获得高清大图并继续制作物料。</p>
+      </div>
+      <div class="final-photo-list" id="finalPhotoList"></div>
+      <div class="regen-card">
+        <div>
+          <strong>不够满意？</strong>
+          <span>可免费微调 1 次，优先修表情、脸型、氛围，不整组重跑。</span>
+        </div>
+        <button class="secondary-action" id="regenBtn" type="button">微调一次</button>
+      </div>
+      <div class="offer-card">
+        <strong id="unlockPrice">已选 1 张高清图 · 合计 ￥29.9</strong>
+        <span>按张解锁，解锁后自动保存到资产，可继续制作物料</span>
+      </div>
+      <button class="primary-action" data-next="shop" type="button">解锁所选高清图，并制作物料</button>
+    </template>
+
+    <template id="shopStep">
+      <div class="shop-hero">
+        <span class="photo-thumb garden large"></span>
+        <div>
+          <h2>选择资产里的高清图制作物料</h2>
+          <p>先从资产里选择一张或多张高清图，再选择要制作的实体产品。</p>
+        </div>
+      </div>
+      <div class="shop-asset-picker" id="shopAssetPicker"></div>
+      <div class="material-grid">
+        <button class="material-card selected" type="button">
+          <span>婚礼现场</span>
+          <strong>迎宾海报</strong>
+          <em>￥69 起 · 立即出设计</em>
+        </button>
+        <button class="material-card" type="button">
+          <span>纪念收藏</span>
+          <strong>相册 / 相框</strong>
+          <em>￥99 起 · 适合送父母</em>
+        </button>
+        <button class="material-card" type="button">
+          <span>惊喜礼物</span>
+          <strong>3D 公仔打印</strong>
+          <em>￥199 起 · 立体新人形象</em>
+        </button>
+        <button class="material-card" type="button">
+          <span>家居软装</span>
+          <strong>抱枕印花</strong>
+          <em>￥59 起 · 可做情侣款</em>
+        </button>
+        <button class="material-card" type="button">
+          <span>高客单</span>
+          <strong>手工大师定制</strong>
+          <em>预约报价 · 专属纪念品</em>
+        </button>
+        <button class="material-card" type="button">
+          <span>文化礼物</span>
+          <strong>非遗产品定制</strong>
+          <em>预约报价 · 更适合长辈礼</em>
+        </button>
+        <button class="material-card partner-card" type="button">
+          <span>合作商家</span>
+          <strong>婚纱购买</strong>
+          <em>预约试纱 · 合作品牌报价</em>
+        </button>
+        <button class="material-card partner-card" type="button">
+          <span>合作商家</span>
+          <strong>婚纱租赁</strong>
+          <em>档期查询 · 到店/邮寄试穿</em>
+        </button>
+      </div>
+      <button class="primary-action" data-next="home" type="button">加入制作清单</button>
+    </template>
+
+    <script src="script.js"></script>
+  </body>
+</html>
